@@ -16,7 +16,15 @@ class ComputerProductsPipeline:
         self.create_table()
 
     def create_connection(self):
-        self.conn = mysql.connector.connect(host='localhost', user='root', passwd='M!n!on643', database='computer_products')
+        db_info = {}
+        with open('computer_products/database.txt', 'r') as f:
+            info = f.readlines()
+            db_info['host'] = info[0].strip()
+            db_info['user'] = info[1].strip()
+            db_info['passwd'] = info[2].strip()
+            db_info['database'] = info[3].strip()
+
+        self.conn = mysql.connector.connect(host=db_info['host'], user=db_info['user'], passwd=db_info['passwd'], database=db_info['database'])
         self.curr = self.conn.cursor()
 
     def create_table(self):
