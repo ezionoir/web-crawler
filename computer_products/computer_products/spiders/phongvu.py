@@ -27,7 +27,6 @@ class PhongVu_Spider(scrapy.Spider):
                 items['retailer'] = 'Phong Vu'
                 items['product_name'] = token.css('div.css-1ybkowq div h3::text').extract()
                 items['product_brand'] = token.css('div.css-68cx5s div::text').extract()
-                # items['product_price'] = token.css('div.css-kgkvir div div.att-product-detail-latest-price::text').extract()
                 items['product_price'] = token.css('div.css-kgkvir > div.css-1co26wt > div::text').extract()
                 if len(items['product_price']) > 1:
                     separator = ''

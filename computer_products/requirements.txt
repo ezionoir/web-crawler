@@ -1,3 +1,4 @@
 scrapy
 mysql-connector-python
 scrapy-user-agents
+scrapy-proxy-pool
