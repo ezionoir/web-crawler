@@ -23,7 +23,7 @@ class PhongVu_Spider(scrapy.Spider):
 
     def parse(self, response):
         if response.status == 200:
-            tokens = response.css('div.css-4rhdrh')
+            tokens = response.css('div.product-card')
             if len(tokens) <= 0:
                 return None
 
@@ -31,6 +31,7 @@ class PhongVu_Spider(scrapy.Spider):
 
             for token in tokens:
                 items['name'] = token.css('div.css-1ybkowq div h3::text').extract()[0]
+                items['retailer'] = 'Phong Vu'
                 items['price'] = token.css('div.css-kgkvir > div.css-1co26wt > div::text').extract()
                 if len(items['price']) > 1:
                     separator = ''
@@ -40,7 +41,7 @@ class PhongVu_Spider(scrapy.Spider):
                     items['price'] = items['price'][0]
 
                 items['brand'] = token.css('div.css-68cx5s div::text').extract()[0]
-                items['url'] = token.css('div.css-1v97aik div div img::attr(src)').extract()[0]
+                items['url'] = 'https://phongvu.vn/' + token.css('a.css-pxdb0j::attr(href)').extract()[0]
                 items['image'] = token.css('div.css-1v97aik div div img::attr(src)').extract()[0]
 
                 yield items

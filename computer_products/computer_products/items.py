@@ -7,13 +7,8 @@ import scrapy
 
 class ComputerProductsItem(scrapy.Item):
     # define the fields for your item here like:
-    # retailer = scrapy.Field()
-    # product_name = scrapy.Field()
-    # product_brand = scrapy.Field()
-    # product_price = scrapy.Field()
-    # product_imglink = scrapy.Field()
-
     name = scrapy.Field()
+    retailer = scrapy.Field()
     price = scrapy.Field()
     brand = scrapy.Field()
     url = scrapy.Field()

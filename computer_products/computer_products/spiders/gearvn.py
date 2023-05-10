@@ -30,9 +30,10 @@ class GearVN_Spider(scrapy.Spider):
 
             for token in tokens:
                 items['name'] = token.css('h2::text').extract()[0]
+                items['retailer'] = 'GearVN'
                 items['price'] = token.css('div.product-row-info div span::text').extract()[0]
                 items['brand'] = 'unknown'
-                items['url'] = token.css('div.product-row-img img::attr(src)').extract()[0]
+                items['url'] = 'https://gearvn.com' + token.css('a::attr(href)').extract()[0]
                 items['image'] = token.css('div.product-row-img img::attr(src)').extract()[0]
 
                 yield items

@@ -30,10 +30,11 @@ class HaNoiComputer_Spider(scrapy.Spider):
 
             for token in tokens:
                 items['name'] = token.css('div.p-info h3 a::text').extract()[0]
+                items['retailer'] = 'Hanoicomputer'
                 items['price'] = token.css('div.p-info span.p-price::attr(data-price)').extract()[0]
                 items['brand'] = 'unknown'
-                items['url'] = token.css('div.p-img a img::attr(src)').extract()[0]
-                items['image'] = token.css('div.p-img a img::attr(src)').extract()[0]
+                items['url'] = 'https://hacom.vn' + token.css('div.p-img a::attr(href)').extract()[0]
+                items['image'] = token.css('div.p-img a img::attr(data-src)').extract()[0]
 
                 yield items
 
