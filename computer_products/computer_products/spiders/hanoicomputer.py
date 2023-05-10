@@ -1,5 +1,6 @@
 import scrapy
 from ..items import ComputerProductsItem
+import os
 
 class HaNoiComputer_Spider(scrapy.Spider):
     name = 'HaCom'
@@ -7,6 +8,10 @@ class HaNoiComputer_Spider(scrapy.Spider):
     start_urls = [
         'https://hacom.vn'
     ]
+    custom_settings = {
+        'FEED_URI': 'hacom.json',
+        'FEED_FORMAT': 'json'
+    }
 
     def __init__(self, query=None, *args, **kwargs):
         super(HaNoiComputer_Spider, self).__init__(*args, **kwargs)
@@ -24,11 +29,11 @@ class HaNoiComputer_Spider(scrapy.Spider):
             items = ComputerProductsItem()
 
             for token in tokens:
-                items['retailer'] = 'Ha Noi Computer'
-                items['product_name'] = token.css('div.p-info h3 a::text').extract()
-                items['product_brand'] = ['Unknown']
-                items['product_price'] = token.css('div.p-info span.p-price::attr(data-price)').extract()
-                items['product_imglink'] = token.css('div.p-img a img::attr(src)').extract()
+                items['name'] = token.css('div.p-info h3 a::text').extract()[0]
+                items['price'] = token.css('div.p-info span.p-price::attr(data-price)').extract()[0]
+                items['brand'] = 'unknown'
+                items['url'] = token.css('div.p-img a img::attr(src)').extract()[0]
+                items['image'] = token.css('div.p-img a img::attr(src)').extract()[0]
 
                 yield items
 

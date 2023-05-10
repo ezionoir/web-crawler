@@ -1,5 +1,6 @@
 import scrapy
 from ..items import ComputerProductsItem
+import os
 
 class GearVN_Spider(scrapy.Spider):
     name = 'GearVN'
@@ -7,8 +8,12 @@ class GearVN_Spider(scrapy.Spider):
     start_urls = [
         'https://gearvn.com/'
     ]
+    custom_settings = {
+        'FEED_URI': 'gearvn.json',
+        'FEED_FORMAT': 'json'
+    }
 
-    def __init__(self, query=None, *args, **kwargs):
+    def __init__(self, query=None, category=None, *args, **kwargs):
         super(GearVN_Spider, self).__init__(*args, **kwargs)
         if query is not None:
             self.start_urls = [
@@ -24,11 +29,11 @@ class GearVN_Spider(scrapy.Spider):
             items = ComputerProductsItem()
 
             for token in tokens:
-                items['retailer'] = 'GearVN'
-                items['product_name'] = token.css('h2::text').extract()
-                items['product_brand'] = ['Unknown']
-                items['product_price'] = token.css('div.product-row-info div span::text').extract()
-                items['product_imglink'] = token.css('div.product-row-img img::attr(src)').extract()
+                items['name'] = token.css('h2::text').extract()[0]
+                items['price'] = token.css('div.product-row-info div span::text').extract()[0]
+                items['brand'] = 'unknown'
+                items['url'] = token.css('div.product-row-img img::attr(src)').extract()[0]
+                items['image'] = token.css('div.product-row-img img::attr(src)').extract()[0]
 
                 yield items
 
