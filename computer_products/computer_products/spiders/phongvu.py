@@ -10,7 +10,7 @@ class PhongVu_Spider(scrapy.Spider):
         'https://phongvu.vn/'
     ]
     custom_settings = {
-        'FEED_URI': 'phongvu.json',
+        'FEED_URI': 'crawl_results/phongvu.json',
         'FEED_FORMAT': 'json'
     }
 

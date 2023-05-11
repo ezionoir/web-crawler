@@ -9,7 +9,7 @@ class HaNoiComputer_Spider(scrapy.Spider):
         'https://hacom.vn'
     ]
     custom_settings = {
-        'FEED_URI': 'hacom.json',
+        'FEED_URI': 'crawl_results/hacom.json',
         'FEED_FORMAT': 'json'
     }
 

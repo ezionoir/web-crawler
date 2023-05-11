@@ -9,7 +9,7 @@ class GearVN_Spider(scrapy.Spider):
         'https://gearvn.com/'
     ]
     custom_settings = {
-        'FEED_URI': 'gearvn.json',
+        'FEED_URI': 'crawl_results/gearvn.json',
         'FEED_FORMAT': 'json'
     }
 
