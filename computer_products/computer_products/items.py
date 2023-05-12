@@ -12,4 +12,4 @@ class ComputerProductsItem(scrapy.Item):
     price = scrapy.Field()
     brand = scrapy.Field()
     url = scrapy.Field()
-    image = scrapy.Field()
+    img_url = scrapy.Field()

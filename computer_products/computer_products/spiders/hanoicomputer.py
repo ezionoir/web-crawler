@@ -34,7 +34,7 @@ class HaNoiComputer_Spider(scrapy.Spider):
                 items['price'] = token.css('div.p-info span.p-price::attr(data-price)').extract()[0]
                 items['brand'] = 'unknown'
                 items['url'] = 'https://hacom.vn' + token.css('div.p-img a::attr(href)').extract()[0]
-                items['image'] = token.css('div.p-img a img::attr(data-src)').extract()[0]
+                items['img_url'] = token.css('div.p-img a img::attr(data-src)').extract()[0]
 
                 yield items
 

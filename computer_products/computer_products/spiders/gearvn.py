@@ -5,6 +5,15 @@ import os
 class GearVN_Spider(scrapy.Spider):
     name = 'GearVN'
     page_number = 1
+    category_urls = {
+        'laptop': [
+            'https://gearvn.com/collections/laptop-hoc-tap-va-lam-viec-duoi-15tr',
+            'https://gearvn.com/collections/laptop-hoc-tap-va-lam-viec-tu-15tr-den-20tr',
+            'https://gearvn.com/collections/laptop-hoc-tap-va-lam-viec-tren-20-trieu',
+            'https://gearvn.com/search?type=product&q=filter=((title%3Aproduct%20adjacent%20laptop%20gaming))'
+        ],
+
+    }
     start_urls = [
         'https://gearvn.com/'
     ]
@@ -13,12 +22,10 @@ class GearVN_Spider(scrapy.Spider):
         'FEED_FORMAT': 'json'
     }
 
-    def __init__(self, query=None, category=None, *args, **kwargs):
+    def __init__(self, category=None, *args, **kwargs):
         super(GearVN_Spider, self).__init__(*args, **kwargs)
-        if query is not None:
-            self.start_urls = [
-                f'https://gearvn.com/search?type=product&q=filter=((title%3Aproduct%20adjacent%20{query}))'
-            ]
+        if category is not None:
+            self.start_urls = self.category_urls.get(category, None)
 
     def parse(self, response):
         if response.status == 200:
@@ -34,7 +41,7 @@ class GearVN_Spider(scrapy.Spider):
                 items['price'] = token.css('div.product-row-info div span::text').extract()[0]
                 items['brand'] = 'unknown'
                 items['url'] = 'https://gearvn.com' + token.css('a::attr(href)').extract()[0]
-                items['image'] = token.css('div.product-row-img img::attr(src)').extract()[0]
+                items['img_url'] = 'http://gearvn.com' + token.css('div.product-row-img img::attr(src)').extract()[0]
 
                 yield items
 

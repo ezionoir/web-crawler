@@ -9,32 +9,33 @@ from computer_products.spiders.gearvn import GearVN_Spider
 from computer_products.spiders.hanoicomputer import HaNoiComputer_Spider
 
 def clear_old_result():
-    current_path = os.path.join(os.getcwd(), 'crawl_results')
-    for filename in os.listdir(current_path):
+    crawled_results_dir = os.path.join(os.getcwd(), 'crawl_results')
+    for filename in os.listdir(crawled_results_dir):
         if filename.endswith('.json'):
-            os.remove(os.path.join(current_path, filename))
+            os.remove(os.path.join(crawled_results_dir, filename))
 
 def merge_result(category=None):
     result = []
-    current_path = os.path.join(os.getcwd(), 'crawl_results')
-    for filename in os.listdir(current_path):
+    crawled_results_dir = os.path.join(os.getcwd(), 'crawl_results')
+    for filename in os.listdir(crawled_results_dir):
         if filename.endswith('.json'):
-            with open(os.path.join(current_path, filename), 'r', encoding='utf-8') as f:
-                crawl_result = json.load(f)
-                result += crawl_result
+            with open(os.path.join(crawled_results_dir, filename), 'r', encoding='utf-8') as f:
+                if os.path.getsize(os.path.join(crawled_results_dir, filename)) > 0:
+                    crawl_result = json.load(f)
+                    result += crawl_result
     with open(f'merged_results/{category}.json', 'w') as f:
         json.dump(result, f, indent=4)
 
 settings = get_project_settings()
 process = CrawlerProcess(settings)
-def main(query=None, category=None):
+def main(category=None):
     clear_old_result()
 
-    process.crawl(PhongVu_Spider, query=query)
-    process.crawl(GearVN_Spider, query=query)
+    process.crawl(PhongVu_Spider, category=category)
+    process.crawl(GearVN_Spider, category=category)
     # process.crawl(HaNoiComputer_Spider, query=query)
     process.start()
 
     merge_result(category=category)
 
-main(query=sys.argv[1], category=sys.argv[2])
+main(category=sys.argv[1])

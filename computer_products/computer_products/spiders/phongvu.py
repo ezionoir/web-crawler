@@ -6,6 +6,11 @@ import sys
 class PhongVu_Spider(scrapy.Spider):
     name = 'PhongVu'
     page_number = 1
+    category_urls = {
+        'laptop': 'https://phongvu.vn/c/laptop',
+        'mobile': 'https://phongvu.vn/c/phone-dien-thoai',
+        'tablet': 'https://phongvu.vn/c/may-tinh-bang'
+    }
     start_urls = [
         'https://phongvu.vn/'
     ]
@@ -14,12 +19,10 @@ class PhongVu_Spider(scrapy.Spider):
         'FEED_FORMAT': 'json'
     }
 
-    def __init__(self, query=None, category=None, *args, **kwargs):
+    def __init__(self, category=None, *args, **kwargs):
         super(PhongVu_Spider, self).__init__(*args, **kwargs)
-        if query is not None:
-            self.start_urls = [
-                f'https://phongvu.vn/search?router=productListing&query={query}'
-            ]
+        if category is not None:
+            self.start_urls = [self.category_urls.get(category, None)]
 
     def parse(self, response):
         if response.status == 200:
@@ -42,7 +45,7 @@ class PhongVu_Spider(scrapy.Spider):
 
                 items['brand'] = token.css('div.css-68cx5s div::text').extract()[0]
                 items['url'] = 'https://phongvu.vn/' + token.css('a.css-pxdb0j::attr(href)').extract()[0]
-                items['image'] = token.css('div.css-1v97aik div div img::attr(src)').extract()[0]
+                items['img_url'] = token.css('div.css-1v97aik div div img::attr(src)').extract()[0]
 
                 yield items
 
