@@ -32,7 +32,7 @@ def main(query=None, category=None):
 
     process.crawl(PhongVu_Spider, query=query)
     process.crawl(GearVN_Spider, query=query)
-    process.crawl(HaNoiComputer_Spider, query=query)
+    # process.crawl(HaNoiComputer_Spider, query=query)
     process.start()
 
     merge_result(category=category)
